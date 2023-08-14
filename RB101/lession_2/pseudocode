@@ -1,0 +1,61 @@
+a method that returns the sum of two integers
+Given integer_1 and integer_2
+START 
+SET result = integer_1 + integer_2
+PRINT result
+END
+
+a method that takes an array of strings, and returns a string that is all those strings concatenated together
+
+START 
+given array of strings to be combined called array_of_strings
+SET concat_string = ''
+SET iterator = 0 
+WHILE iterator <= length of array_of_strings
+  SET concat_string += string within array of strings at space iterator
+iterator += 1
+print concat_string
+END
+  
+a method that takes an array of integers, and returns a new array with every other element from the original array, starting with the first element. For instance:
+given an array of integers called array_of_integers
+
+START 
+SET iterator = 0 
+SET odd_elements = []
+
+WHILE iterator <= length of array_of_integers
+  IF iterator is even
+    SET odd_elements +=  integer at array_of_integers[iterator]
+PRINT odd_elements
+END
+
+a method that determines the index of the 3rd occurrence of a given character in a string. For instance, if the given character is 'x' and the string is 'axbxcdxex', the method should return 6 (the index of the 3rd 'x'). If the given character does not occur at least 3 times, return ni
+
+START
+SET character = given character to track 
+SET count = 0
+SET iterator = 0 
+
+WHILE iterator > length of string
+  IF letter of string at position iterator == character
+    IF count == 2
+        PRINT iterator
+    ELSE count += 1
+  ELSE 
+    go to next iteration
+PRINT nil 
+END
+
+a method that takes two arrays of numbers and returns the result of merging the arrays. The elements of the first array should become the elements at the even indexes of the returned array, while the elements of the second array should become the elements at the odd indexes. For instance:
+Given arrays first_array and second_array
+
+START 
+SET index = 0
+SET new_array  = []
+WHILE array 2 is not empty 
+    SET new_array << pop first element in array_1
+    SET new_array << pop first element in array_2
+  
+PRINT new_array 
+END
