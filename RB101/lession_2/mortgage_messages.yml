@@ -1,0 +1,6 @@
+Welcome: "Welcome to the loan calcualtor"
+get_ammount: 'Please enter the loan ammount ($)'
+get_apr: 'Enter the yearly APR as a number e.g. enter 5.4 for 5.4%'
+invalid_number_input: 'Please input a valid number (Either a whole number or decimal)'
+output: "Your monthly payment will be $%{monthly_payment} for %{loan_duration_months} months, totaling $%{total}. $%{interest} of which will be interest"
+Continue?: "Thanks for using the mortgage calculator. Would you look to make another calculation? (Enter Y or y to start over)"
