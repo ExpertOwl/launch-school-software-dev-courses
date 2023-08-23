@@ -1,7 +1,11 @@
-hello = 'hi'
-
-def hello
-  "Saying hello!"
+def name
+  "George"
 end
 
-puts hello()
+a = "Lisa"
+
+def display_name
+  puts a
+end
+
+display_name

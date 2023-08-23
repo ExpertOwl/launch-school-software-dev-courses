@@ -30,20 +30,33 @@ def win?(p1_choice, p2_choice)
   KEY_BEATS_VALUE[p1_choice.to_sym].to_a.include?(p2_choice)
 end
 
-def display_results(winner)
+def display_round_results(winner)
   case winner
   when 'player'
-    prompt 'you win!'
+    prompt 'You win this round!'
   when 'computer'
-    prompt 'you lost!'
+    prompt 'You lose this round!'
   when 'tie'
-    prompt 'It\'s a tie!'
+    prompt 'This round is a tie!'
   end
 end
 
 def update_score(score, winner)
-  score[winner.to_sym] += 1
+  score[winner.to_sym] += 1 unless winner == 'tie'
   score
+end
+
+def someome_has_three_points?(score)
+  score.any? { |_, value| value == 3 }
+end
+
+def display_game_winner(round_winner)
+  case round_winner
+  when 'player'
+    prompt "You've won the game!"
+  when 'computer'
+    prompt 'The computer has won the game!'
+  end
 end
 
 VALID_CHOICES = %w[rock paper scissors lizard spock].freeze
@@ -64,17 +77,23 @@ KEY_BEATS_VALUE = {
   spock: %w[rock scissors] \
 }.freeze
 
-score = { player: 0, computer: 0, tie: 0 }
-continue = ''
 loop do
-  choice = player_choice
-  computer_choice = VALID_CHOICES.sample
-  prompt("You chose #{choice}, computer chose #{computer_choice}")
-  winner = return_results(choice, computer_choice)
-  display_results(winner)
-  score = update_score(score, winner)
-  prompt("The score is #{score}")
-  prompt('Play again? (Y or y to play again)')
+  score = { player: 0, computer: 0 }
+  prompt('First to three wins!')
+  round_winner = ''
+  loop do
+    choice = player_choice
+    computer_choice = VALID_CHOICES.sample
+    prompt("You chose #{choice}, computer chose #{computer_choice}")
+    round_winner = return_results(choice, computer_choice)
+    display_round_results(round_winner)
+    score = update_score(score, round_winner)
+    prompt("The score is #{score}")
+    break if someome_has_three_points?(score)
+  end
+  prompt(display_game_winner(round_winner))
+  prompt('Would you like to play again? (Y or y to play)')
   continue = gets.chomp.downcase
   break unless continue == 'y'
 end
+prompt('Goodbye!')
