@@ -41,6 +41,7 @@ def print_in_box(str)
     str = str[0..79]
     message_length = 80
   end
+  
   str_line_1_5 = build_string('-', message_length, '+')
   str_line_2_4 =  build_string(' ', message_length, '|')
   str_line_3 = build_center(str)
