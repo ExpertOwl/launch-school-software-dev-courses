@@ -1,14 +1,9 @@
-def crunch(str)
-	new_string = "" 
-	str.each_char do |char| 
-	  new_string << char if char != new_string[-1]
-	end
+$x = 10 
 
-  new_string
+def add_five
+  sum = $x + 5
+  $x = sum
 end
 
-p crunch('ddaaiillyy ddoouubbllee') == 'daily double'
-p crunch('4444abcabccba') == '4abcabcba'
-p crunch('ggggggggggggggg') == 'g'
-p crunch('a') == 'a'
-p crunch('') == ''
+add_five
+puts $x
