@@ -47,9 +47,9 @@ def get_player_choice(player_hand, dealer_hand)
   loop do
     print_player_turn_info(player_hand, dealer_hand)
     player_choice = gets.chomp.downcase
-    break if player_choice == 'hit' || player_choice == 'stay'
+    break if player_choice.start_with?('h') || player_choice.start_with?('s')
     clear_terminal
-    prompt('Please input \'hit\' or \'stay\'')
+    prompt('Please input (h)it or (s)tay')
   end
   player_choice
 end
@@ -57,7 +57,7 @@ end
 def print_player_turn_info(player_hand, dealer_hand)
   prompt("The Dealer has: #{dealer_hand[-1]}, and an unknown Card")
   prompt("You have: #{to_sentence(player_hand)}")
-  prompt('hit or stay?')
+  prompt('(h)it or (s)tay?')
 end
 
 def to_sentence(hand)
@@ -193,10 +193,10 @@ loop do
     dealer_score = 0
 
     # player turn
-    player_choice = nil
-    until player_choice == 'stay' || bust?(player_score)
+    player_choice = ''
+    until player_choice.start_with?('s') || bust?(player_score)
       player_choice = get_player_choice(player_hand, dealer_hand)
-      if player_choice == 'hit'
+      if player_choice.start_with?('h')
         clear_terminal
         draw_card(player_hand, deck)
         prompt("You drew #{player_hand[-1]}")
