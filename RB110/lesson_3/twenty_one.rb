@@ -172,6 +172,11 @@ def print_end_of_game_msg(result, player_rounds_won, dealer_rounds_won)
   prompt('Would you like to play again? (y/n)')
 end
 
+def print_continue_msg
+  prompt("Press Enter to continue...")
+  gets.chomp
+end
+
 loop do
   print_welcome_msg
   player_rounds_won = 0
@@ -179,7 +184,7 @@ loop do
   round = 1
   loop do
     print_start_round_msg(round)
-    print_rounds_won(player_rounds_won, dealer_rounds_won)
+    print_rounds_won(player_rounds_won, dealer_rounds_won) if round > 1
     player_hand = []
     dealer_hand = []
     deck = initialize_deck
@@ -224,8 +229,7 @@ loop do
     print_round_scores(player_score, dealer_score)
     print_winner(round_result)
     print_rounds_won(player_rounds_won, dealer_rounds_won)
-    prompt("Press Enter to continue...")
-    gets.chomp
+    print_continue_msg
     clear_terminal
     break if winner?(player_rounds_won, dealer_rounds_won)
     round += 1
