@@ -22,13 +22,13 @@ def prompt(message)
   puts "  => #{message}"
 end
 
-def clear
+def clear_terminal
   system('clear')
 end
 
 def initialize_deck
   deck = CARD_NAMES * NUMBER_OF_SUITS
-  deck.shuffle!
+  deck.shuffle! # I love this so much
 end
 
 def deal_initial_cards(dealer_hand, player_hand, deck)
@@ -48,7 +48,7 @@ def get_player_choice(player_hand, dealer_hand)
     print_player_turn_info(player_hand, dealer_hand)
     player_choice = gets.chomp.downcase
     break if player_choice == 'hit' || player_choice == 'stay'
-    clear
+    clear_terminal
     prompt('Please input \'hit\' or \'stay\'')
   end
   player_choice
@@ -92,21 +92,6 @@ def calculate_points_in_hand(hand)
   total
 end
 
-def print_winner(result)
-  case result
-  when :player_bust
-    prompt('You busted. Dealer wins!')
-  when :dealer_bust
-    prompt('Dealer busted. You win!')
-  when :player_win
-    prompt('You win!')
-  when :dealer_win
-    prompt("Dealer wins!")
-  when :draw
-    prompt('It\'s a Draw!')
-  end
-end
-
 def game_result(player_score, dealer_score)
   if bust?(player_score)
     :player_bust
@@ -136,16 +121,65 @@ def winner?(player_rounds_won, dealer_rounds_won)
   [player_rounds_won, dealer_rounds_won].max == ROUNDS_TO_WIN
 end
 
-loop do
+def print_welcome_msg
   prompt("Welcome to #{MAX_POINTS}")
-  prompt("Best #{ROUNDS_TO_WIN} of #{(ROUNDS_TO_WIN * 2) - 1} wins!")
+  prompt("Closest to #{MAX_POINTS} without busting wins the round")
+  prompt("Best #{ROUNDS_TO_WIN} of #{(ROUNDS_TO_WIN * 2) - 1} wins the game!")
+end
+
+def print_start_round_msg(round_number)
+  prompt("-------")
+  prompt("Round #{round_number}")
+  prompt("-------")
+end
+
+def print_round_hands(player_hand, dealer_hand)
+  prompt('Final Hands:')
+  prompt("Player has #{to_sentence(player_hand)}.")
+  prompt("Dealer has  #{to_sentence(dealer_hand)}.")
+end
+
+def print_round_scores(player_score, dealer_score)
+  prompt('Final Scores This Round:')
+  prompt("Player: #{player_score}.")
+  prompt("Dealer: #{dealer_score}.")
+end
+
+def print_rounds_won(player_rounds_won, dealer_rounds_won)
+  prompt("Rounds won:")
+  prompt("Player: #{player_rounds_won}, Dealer: #{dealer_rounds_won}")
+end
+
+def print_winner(result)
+  case result
+  when :player_bust
+    prompt('You busted. Dealer wins!')
+  when :dealer_bust
+    prompt('Dealer busted. You win!')
+  when :player_win
+    prompt('You win!')
+  when :dealer_win
+    prompt("Dealer wins!")
+  when :draw
+    prompt('It\'s a Draw!')
+  end
+end
+
+def print_end_of_game_msg(result, player_rounds_won, dealer_rounds_won)
+  prompt("We have a winner!")
+  prompt("Player: #{player_rounds_won}, Dealer: #{dealer_rounds_won}")
+  print_winner(result)
+  prompt('Would you like to play again? (y/n)')
+end
+
+loop do
+  print_welcome_msg
   player_rounds_won = 0
   dealer_rounds_won = 0
   round = 1
   loop do
-    prompt("-------")
-    prompt("Round #{round}")
-    prompt("-------")
+    print_start_round_msg(round)
+    print_rounds_won(player_rounds_won, dealer_rounds_won)
     player_hand = []
     dealer_hand = []
     deck = initialize_deck
@@ -158,7 +192,7 @@ loop do
     until player_choice == 'stay' || bust?(player_score)
       player_choice = get_player_choice(player_hand, dealer_hand)
       if player_choice == 'hit'
-        clear
+        clear_terminal
         draw_card(player_hand, deck)
         prompt("You drew #{player_hand[-1]}")
       end
@@ -169,7 +203,7 @@ loop do
       prompt('You Busted!')
       dealer_score = calculate_points_in_hand(dealer_hand)
     else
-      clear
+      clear_terminal
       prompt("You stay on #{player_score}")
       dealer_score = dealer_turn(dealer_hand, deck)
       if bust?(dealer_score)
@@ -179,35 +213,27 @@ loop do
       end
     end
 
-    prompt('Final Scores:')
-    prompt("Player: #{player_score} -> #{to_sentence(player_hand)}.")
-    prompt("Dealer: #{dealer_score} -> #{to_sentence(dealer_hand)}.")
-
-    result = game_result(player_score, dealer_score)
-
-    print_winner(result)
-
-    case result
+    round_result = game_result(player_score, dealer_score)
+    case round_result
     when :player_bust, :dealer_win
       dealer_rounds_won += 1
     when :dealer_bust, :player_win
       player_rounds_won += 1
     end
-    prompt("Rounds won: " \
-           "Player: #{player_rounds_won}, Dealer: #{dealer_rounds_won}")
-    prompt("Press Enter to continue")
+    print_round_hands(player_hand, dealer_hand)
+    print_round_scores(player_score, dealer_score)
+    print_winner(round_result)
+    print_rounds_won(player_rounds_won, dealer_rounds_won)
+    prompt("Press Enter to continue...")
     gets.chomp
-    clear
+    clear_terminal
     break if winner?(player_rounds_won, dealer_rounds_won)
     round += 1
   end
-
-  prompt("We have a winner! Final score: " \
-         "Player: #{player_rounds_won}, Dealer: #{dealer_rounds_won}")
   result = compare_scores(player_rounds_won, dealer_rounds_won)
-  print_winner(result)
-  prompt('Would you like to play again? (y/n)')
+  print_end_of_game_msg(result, player_rounds_won, dealer_rounds_won)
   break unless gets.chomp.downcase.start_with?('y')
+  clear_terminal
 end
 
 prompt('Thanks for playing!')
