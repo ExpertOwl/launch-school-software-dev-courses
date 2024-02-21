@@ -1,16 +1,16 @@
-CARD_NAMES = %w(Ace Two Three Four Five Six
-                Seven Eight Nine Ten Jack Queen King)
+CARD_NAMES = %w(Ace 2 3 4 5 6 7 8 9 10 Jack Queen King)
 NUMBER_OF_SUITS = 4
 MAX_POINTS = 21
-CARD_VALUES = { 'Two' => 2,
-                'Three' => 3,
-                'Four' => 4,
-                'Five' => 5,
-                'Six' => 6,
-                'Seven' => 7,
-                'Eight' => 8,
-                'Nine' => 9,
-                'Ten' => 10,
+
+CARD_VALUES = { '2' => 2,
+                '3' => 3,
+                '4' => 4,
+                '5' => 5,
+                '6' => 6,
+                '7' => 7,
+                '8' => 8,
+                '9' => 9,
+                '10' => 10,
                 'Jack' => 10,
                 'Queen' => 10,
                 'King' => 10,
@@ -22,13 +22,17 @@ def prompt(message)
   puts "  => #{message}"
 end
 
+def blank_line
+  puts("\n")
+end
+
 def clear_terminal
   system('clear')
 end
 
 def initialize_deck
   deck = CARD_NAMES * NUMBER_OF_SUITS
-  deck.shuffle! # I love this so much
+  p deck.shuffle!
 end
 
 def deal_initial_cards(dealer_hand, player_hand, deck)
@@ -134,20 +138,23 @@ def print_start_round_msg(round_number)
 end
 
 def print_round_hands(player_hand, dealer_hand)
+  blank_line
   prompt('Final Hands:')
-  prompt("Player has #{to_sentence(player_hand)}.")
-  prompt("Dealer has  #{to_sentence(dealer_hand)}.")
+  prompt("\tPlayer has #{to_sentence(player_hand)}.")
+  prompt("\tDealer has #{to_sentence(dealer_hand)}.")
 end
 
 def print_round_scores(player_score, dealer_score)
-  prompt('Final Scores This Round:')
-  prompt("Player: #{player_score}.")
-  prompt("Dealer: #{dealer_score}.")
+  blank_line
+  prompt('Final Scores this Round:')
+  prompt("\tPlayer: #{player_score}.")
+  prompt("\tDealer: #{dealer_score}.")
+  blank_line
 end
 
 def print_rounds_won(player_rounds_won, dealer_rounds_won)
   prompt("Rounds won:")
-  prompt("Player: #{player_rounds_won}, Dealer: #{dealer_rounds_won}")
+  prompt("\tPlayer: #{player_rounds_won}, Dealer: #{dealer_rounds_won}")
 end
 
 def print_winner(result)
